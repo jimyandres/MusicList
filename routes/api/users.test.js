@@ -3,10 +3,8 @@ const request = require('supertest');
 
 // Top level of this test suite: the entire user API
 describe('The User API', () => {
-
 	// Specific test
 	it('Returns a list of all users', async () => {
-
 		// Connect to the server and get a response
 		// Expect that response to be 200 and and server JSON
 		const res = await request('http://localhost:3000')

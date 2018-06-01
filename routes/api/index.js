@@ -1,8 +1,9 @@
 const express = require('express');
+
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-	res.json({Text: 'MusicList Text'});
+	res.json({ Text: 'MusicList Text' });
 });
 
 module.exports = router;
