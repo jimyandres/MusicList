@@ -8,7 +8,8 @@
   },
   "rules": {
     "no-unused-vars": ["error", {"argsIgnorePattern": "next"}],
-    "indent": [2, "tab"],
-    "no-tabs": 0
+    "react/prop-types": [0],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "arrow-body-style": [2, "always"]
   },
 }
