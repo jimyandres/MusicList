@@ -33,4 +33,10 @@ router.post('/login', (req, res) => {
   });
 });
 
+// GET to /logout
+router.get('/logout', (req, res) => {
+  req.logout();
+  return res.send(JSON.stringify(req.user));
+});
+
 module.exports = router;
