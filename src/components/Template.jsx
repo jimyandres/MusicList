@@ -1,11 +1,11 @@
 import React from 'react';
 
+import Header from './shared/Header';
+
 const Template = () => {
   return (
     <div className="wrapper">
-      <header>
-        <h1>MusicList</h1>
-      </header>
+      <Header username="anonymous" />
       <div className="content">
         Content will eventually go here.
       </div>
