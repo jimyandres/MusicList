@@ -5,15 +5,21 @@ import { render } from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/musiclist.scss';
 
-import Store from './store';
+import DevTools from './components/shared/DevTools';
+import configureStore from './store';
 
 import TemplateContainer from './components/TemplateContainer';
+
+const Store = configureStore();
 
 const renderApp = (Component) => {
   render(
     <AppContainer>
       <Provider store={Store} >
-        <Component headline="Test Headline" />
+        <div>
+          <Component headline="Test Headline" />
+          <DevTools />
+        </div>
       </Provider>
     </AppContainer>,
     document.querySelector('#react-app'),
