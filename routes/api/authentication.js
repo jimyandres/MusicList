@@ -20,4 +20,17 @@ router.post('/register', (req, res) => {
   });
 });
 
+// POST to /login
+router.post('/login', (req, res) => {
+  passport.authenticate('local')(req, res, () => {
+    // If logged in, we should should have user info to send back
+    if (req.user) {
+      return res.send(JSON.stringify(req.user));
+    }
+
+    // Otherwise return an error
+    return res.send(JSON.stringify({ error: 'There was an error logging in' }));
+  });
+});
+
 module.exports = router;
