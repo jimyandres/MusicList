@@ -11,6 +11,10 @@ const expressSession = require('express-session')({
   resave: false,
   saveUninitialized: false,
 });
+const webpack = require('webpack');
+const webpackConfig = require('./webpack.config');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 const User = require('./models/user');
 
 const indexRouter = require('./routes/index');
@@ -34,6 +38,20 @@ app.use(expressSession);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Webpcck Server
+const webpackCompiler = webpack(webpackConfig);
+app.use(webpackDevMiddleware(webpackCompiler, {
+  publicPath: webpackConfig.output.publicPath,
+  stats: {
+    color: true,
+    chunks: true,
+    'errors-only': true,
+  },
+}));
+app.use(webpackHotMiddleware(webpackCompiler, {
+  log: console.log,
+}));
 
 app.use('/api', api);
 app.use('/api/users', users);
