@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import Header from './shared/Header';
+import Header from './shared/HeaderContainer';
 import HomePage from './home/HomePageContainer';
 import LoginPage from './account/LoginPageContainer';
 import ProfilePage from './account/ProfilePage';
