@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 
+const renderLogin = () => <NavLink tag={Link} to="/account/login">Log In</NavLink>;
+const renderGreeting = name => <span>Welcome, {name}</span>;
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -20,6 +23,7 @@ class Header extends Component {
   }
 
   render() {
+    const { isLoggedIn, firstName } = this.props.authentication;
     return (
       <header className="wrapper">
         <Navbar color="faed" light expand>
@@ -28,7 +32,7 @@ class Header extends Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink tag={Link} to="/account/login">Log In</NavLink>
+                { isLoggedIn ? renderGreeting(firstName) : renderLogin() }
               </NavItem>
             </Nav>
           </Collapse>

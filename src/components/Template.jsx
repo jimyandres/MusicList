@@ -7,16 +7,17 @@ import LoginPage from './account/LoginPageContainer';
 import ProfilePage from './account/ProfilePage';
 
 const Template = (props) => {
+  const { authentication, progress } = props;
   return (
     <Router>
       <div className="wrapper">
-        <Header username="anonymous" />
+        <Header authentication={authentication} />
         <section className="page-content container-fluid">
           <Route exact path="/" component={HomePage} />
           <Route exact path="/account/login" component={LoginPage} />
           <Route path="/account/profile/:id" component={ProfilePage} />
         </section>
-        <div className="loader-wrapper" style={props.progress > 0 ? { display: 'block' } : { display: 'none' }}>
+        <div className="loader-wrapper" style={progress > 0 ? { display: 'block' } : { display: 'none' }}>
           <div className="loader-box">
             <div className="loader">Loading...</div>
           </div>
