@@ -19,8 +19,8 @@ class Header extends Component {
 
   logOutClick(e) {
     e.preventDefault();
-    const { logUserOut } = this.props;
-    logUserOut();
+    const { logUserOutFunction } = this.props;
+    logUserOutFunction();
   }
 
   toggleNavbar() {
