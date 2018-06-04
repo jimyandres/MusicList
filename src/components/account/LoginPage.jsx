@@ -11,6 +11,7 @@ class LoginPage extends Component {
     };
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.compileFormData = this.compileFormData.bind(this);
   }
@@ -18,6 +19,13 @@ class LoginPage extends Component {
   // update state as email value changes
   handleEmailChange(e) {
     this.setState({ email: e.target.value });
+  }
+
+  // catch enter key
+  handleKeyPress(target) {
+    if (target.charCode === 13) {
+      this.compileFormData();
+    }
   }
 
   // update states as password value changes
@@ -42,9 +50,10 @@ class LoginPage extends Component {
                 type="email"
                 name="email"
                 id="exampleEmail"
-                placeHolder="noreply@musiclist.com"
+                placeholder="noreply@musiclist.com"
                 value={this.state.email}
                 onChange={this.handleEmailChange}
+                onKeyPress={this.handleKeyPress}
               />
             </FormGroup>
             <FormGroup>
@@ -53,9 +62,10 @@ class LoginPage extends Component {
                 type="password"
                 name="password"
                 id="examplePassword"
-                placeHolder="Password"
+                placeholder="Password"
                 value={this.state.password}
                 onChange={this.handlePasswordChange}
+                onKeyPress={this.handleKeyPress}
               />
             </FormGroup>
             <Button onClick={this.compileFormData}>Log In</Button>
