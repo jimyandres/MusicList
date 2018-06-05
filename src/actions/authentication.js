@@ -7,6 +7,8 @@ const loginFailure = error => ({ type: 'AUTHENTICATION_LOGIN_FAILURE', error });
 const loginSuccess = json => ({ type: 'AUTHENTICATION_LOGIN_SUCCESS', json });
 const logoutFailure = error => ({ type: 'AUTHENTICATION_LOGOUT_FAILURE', error });
 const logoutSuccess = () => ({ type: 'AUTHENTICATION_LOGOUT_SUCCESS' });
+const registrationFailure = () => ({ type: 'AUTHENTICATION_REGISTRATION_FAILURE' });
+const registrationSuccess = () => ({ type: 'AUTHENTICATION_REGISTRATION_SUCCESS' });
 const sessionCheckFailure = () => ({ type: 'AUTHENTICATION_SESSION_CHECK_FAILURE' });
 const sessionCheckSuccess = json => ({ type: 'AUTHENTICATION_SESSION_CHECK_SUCCESS', json });
 
@@ -108,6 +110,46 @@ const logUserOut = () => {
   };
 };
 
+// Register a User
+const registerUser = (userData) => {
+  return async (dispatch) => {
+    // turn on spinner
+    dispatch(incrementProgress());
+
+    // contact the API
+    await fetch(
+      // where to contact
+      '/api/authentication/register',
+      // what to send
+      {
+        method: 'POST',
+        body: JSON.stringify(userData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+      },
+    ).then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return null;
+    }).then(async (json) => {
+      if (json) {
+        await dispatch(loginSuccess(json));
+        await dispatch(registrationSuccess());
+      } else {
+        dispatch(registrationFailure(new Error('Registration Failed')));
+      }
+    }).catch((error) => {
+      dispatch(registrationFailure(new Error(error)));
+    });
+
+    // turn off spinner
+    return dispatch(decrementProgress());
+  };
+};
+
 export {
   // Action Creators
   loginAttempt,
@@ -115,10 +157,13 @@ export {
   loginSuccess,
   logoutFailure,
   logoutSuccess,
+  registrationFailure,
+  registrationSuccess,
   sessionCheckFailure,
   sessionCheckSuccess,
   // Others
   checkSession,
   logUserIn,
   logUserOut,
+  registerUser,
 };
