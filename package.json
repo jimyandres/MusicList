@@ -10,6 +10,7 @@
     "build-prod": "SET NODE_ENV=production&&webpack -p --config webpack.config.js"
   },
   "dependencies": {
+    "availity-reactstrap-validation": "^2.0.2",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.0.1",
     "babel-loader": "^7.1.4",
