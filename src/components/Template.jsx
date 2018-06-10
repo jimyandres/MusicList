@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
+import ErrorBox from './shared/ErrorBoxContainer';
 import Header from './shared/HeaderContainer';
 import HomePage from './home/HomePageContainer';
 import LoginPage from './account/LoginPageContainer';
@@ -15,6 +16,7 @@ const Template = (props) => {
       <div className="wrapper">
         <Header authentication={authentication} />
         <section className="page-content container-fluid">
+          <ErrorBox />
           <Route exact path="/" component={HomePage} />
           <Route exact path="/account/login" component={LoginPage} />
           <Route exact path="/account/register" component={RegisterPage} />
