@@ -9,6 +9,7 @@ const logoutFailure = error => ({ type: 'AUTHENTICATION_LOGOUT_FAILURE', error }
 const logoutSuccess = () => ({ type: 'AUTHENTICATION_LOGOUT_SUCCESS' });
 const registrationFailure = () => ({ type: 'AUTHENTICATION_REGISTRATION_FAILURE' });
 const registrationSuccess = () => ({ type: 'AUTHENTICATION_REGISTRATION_SUCCESS' });
+const registrationSuccessViewed = () => ({ type: 'AUTHENTICATION_REGISTRATION_SUCCESS_VIEWED' });
 const sessionCheckFailure = () => ({ type: 'AUTHENTICATION_SESSION_CHECK_FAILURE' });
 const sessionCheckSuccess = json => ({ type: 'AUTHENTICATION_SESSION_CHECK_SUCCESS', json });
 
@@ -159,6 +160,7 @@ export {
   logoutSuccess,
   registrationFailure,
   registrationSuccess,
+  registrationSuccessViewed,
   sessionCheckFailure,
   sessionCheckSuccess,
   // Others
