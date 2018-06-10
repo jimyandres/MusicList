@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
 import { decrementProgress, incrementProgress } from './progress';
+import { clearError } from './error';
 
 // Action Creators
 const loginAttempt = () => ({ type: 'AUTHENTICATION_LOGIN_ATTEMPT' });
@@ -7,7 +8,7 @@ const loginFailure = error => ({ type: 'AUTHENTICATION_LOGIN_FAILURE', error });
 const loginSuccess = json => ({ type: 'AUTHENTICATION_LOGIN_SUCCESS', json });
 const logoutFailure = error => ({ type: 'AUTHENTICATION_LOGOUT_FAILURE', error });
 const logoutSuccess = () => ({ type: 'AUTHENTICATION_LOGOUT_SUCCESS' });
-const registrationFailure = () => ({ type: 'AUTHENTICATION_REGISTRATION_FAILURE' });
+const registrationFailure = error => ({ type: 'AUTHENTICATION_REGISTRATION_FAILURE', error });
 const registrationSuccess = () => ({ type: 'AUTHENTICATION_REGISTRATION_SUCCESS' });
 const registrationSuccessViewed = () => ({ type: 'AUTHENTICATION_REGISTRATION_SUCCESS_VIEWED' });
 const sessionCheckFailure = () => ({ type: 'AUTHENTICATION_SESSION_CHECK_FAILURE' });
@@ -42,6 +43,9 @@ const checkSession = () => {
 // Log User In
 const logUserIn = (userData) => {
   return async (dispatch) => {
+    // Clear the error box if it is displayed
+    dispatch(clearError());
+
     // turn on spinner
     dispatch(incrementProgress());
 
@@ -84,6 +88,9 @@ const logUserIn = (userData) => {
 // Log User Out
 const logUserOut = () => {
   return async (dispatch) => {
+    // Clear the error box if it is displayed
+    dispatch(clearError());
+
     // turn on spinner
     dispatch(incrementProgress());
 
@@ -114,6 +121,9 @@ const logUserOut = () => {
 // Register a User
 const registerUser = (userData) => {
   return async (dispatch) => {
+    // Clear the error box if it is displayed
+    dispatch(clearError());
+
     // turn on spinner
     dispatch(incrementProgress());
 
@@ -136,14 +146,14 @@ const registerUser = (userData) => {
       }
       return null;
     }).then(async (json) => {
-      if (json) {
+      if (json && json.username) {
         await dispatch(loginSuccess(json));
         await dispatch(registrationSuccess());
       } else {
-        dispatch(registrationFailure(new Error('Registration Failed. Please try again.')));
+        dispatch(registrationFailure(new Error(json.error.message ? 'Email or username already exists.' : json.error)));
       }
     }).catch((error) => {
-      dispatch(registrationFailure(new Error(error)));
+      dispatch(registrationFailure(new Error(error.message || 'Registration Failed. Please try again.')));
     });
 
     // turn off spinner
