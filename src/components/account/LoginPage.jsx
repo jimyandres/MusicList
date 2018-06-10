@@ -25,7 +25,7 @@ class LoginPage extends Component {
   // catch enter key
   handleKeyPress(target) {
     if (target.charCode === 13) {
-      this.compileFormData();
+      this.handleValidSubmit();
     }
   }
 
@@ -47,7 +47,7 @@ class LoginPage extends Component {
         <div className="col-10 col-sm-7 col-md-5 col-lg-4">
           <AvForm onValidSubmit={this.handleValidSubmit}>
             <AvGroup>
-              <Label for="exampleEmail">Email</Label>
+              <Label for="userEmail">Email</Label>
               <AvInput
                 id="userEmail"
                 name="email"
@@ -61,7 +61,7 @@ class LoginPage extends Component {
               <AvFeedback>A valid email is required to log in.</AvFeedback>
             </AvGroup>
             <AvGroup>
-              <Label for="examplePassword">Password</Label>
+              <Label for="userPassword">Password</Label>
               <AvInput
                 id="userPassword"
                 name="password"
