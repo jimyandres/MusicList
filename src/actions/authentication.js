@@ -11,6 +11,8 @@ const logoutSuccess = () => ({ type: 'AUTHENTICATION_LOGOUT_SUCCESS' });
 const registrationFailure = error => ({ type: 'AUTHENTICATION_REGISTRATION_FAILURE', error });
 const registrationSuccess = () => ({ type: 'AUTHENTICATION_REGISTRATION_SUCCESS' });
 const registrationSuccessViewed = () => ({ type: 'AUTHENTICATION_REGISTRATION_SUCCESS_VIEWED' });
+const passwordResetHashCreated = () => ({ type: 'AUTHENTICATION_PASSWORD_RESET_HASH_CREATED' });
+const passwordResetHashFailure = () => ({ type: 'AUTHENTICATION_PASSWORD_RESET_HASH_FAILURE' });
 const sessionCheckFailure = () => ({ type: 'AUTHENTICATION_SESSION_CHECK_FAILURE' });
 const sessionCheckSuccess = json => ({ type: 'AUTHENTICATION_SESSION_CHECK_SUCCESS', json });
 
@@ -37,6 +39,36 @@ const checkSession = () => {
       }
       return dispatch(sessionCheckFailure());
     }).catch(err => dispatch(sessionCheckFailure(err)));
+  };
+};
+
+// Send email to API for hashing
+const createHash = (email) => {
+  return async (dispatch) => {
+    // contact the API
+    await fetch(
+      // where to contact
+      '/api/authentication/saveresethash',
+      // what to send
+      {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+      },
+    ).then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return null;
+    }).then((json) => {
+      if (json.username) {
+        return dispatch(passwordResetHashCreated(json));
+      }
+      return dispatch(passwordResetHashFailure(new Error('Something went wrong. Please try again.')));
+    }).catch(err => dispatch(passwordResetHashFailure(err)));
   };
 };
 
@@ -175,6 +207,7 @@ export {
   sessionCheckSuccess,
   // Others
   checkSession,
+  createHash,
   logUserIn,
   logUserOut,
   registerUser,
