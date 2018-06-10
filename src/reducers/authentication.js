@@ -34,7 +34,6 @@ const reducer = (state = initialState, action) => {
     }
     case 'AUTHENTICATION_LOGOUT_FAILURE':
     case 'AUTHENTICATION_REGISTRATION_FAILURE': {
-      // TODO: handle error
       return state;
     }
     case 'AUTHENTICATION_REGISTRATION_SUCCESS': {

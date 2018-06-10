@@ -70,7 +70,7 @@ const logUserIn = (userData) => {
       if (json) {
         dispatch(loginSuccess(json));
       } else {
-        dispatch(loginFailure(new Error('Authentication Failed')));
+        dispatch(loginFailure(new Error('Email or Password Incorrect. Please try again.')));
       }
     }).catch((error) => {
       dispatch(loginFailure(new Error(error)));
@@ -100,10 +100,10 @@ const logUserOut = () => {
       if (response.status === 200) {
         dispatch(logoutSuccess());
       } else {
-        dispatch(logoutFailure(new Error(`Error: ${response.status}`)));
+        dispatch(logoutFailure(new Error(response.status)));
       }
     }).catch((err) => {
-      logoutFailure(err);
+      dispatch(logoutFailure(new Error(err)));
     });
 
     // turn off spinner
@@ -140,7 +140,7 @@ const registerUser = (userData) => {
         await dispatch(loginSuccess(json));
         await dispatch(registrationSuccess());
       } else {
-        dispatch(registrationFailure(new Error('Registration Failed')));
+        dispatch(registrationFailure(new Error('Registration Failed. Please try again.')));
       }
     }).catch((error) => {
       dispatch(registrationFailure(new Error(error)));
