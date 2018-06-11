@@ -28,14 +28,14 @@ class RegisterPage extends Component {
   handleKeyPress(target) {
     if (target.charCode === 13) {
       target.preventDefault();
-      this.compileFormData();
+      this.handleValidSubmit();
     }
   }
 
   // Handle submission once all form data is valid
   handleValidSubmit() {
     const { registerFunction } = this.props;
-    const { formData } = this.state;
+    const formData = this.state;
     registerFunction(formData);
   }
 
