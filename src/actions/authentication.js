@@ -14,6 +14,7 @@ const registrationSuccessViewed = () => ({ type: 'AUTHENTICATION_REGISTRATION_SU
 const passwordResetClear = () => ({ type: 'AUTHENTICATION_PASSWORD_RESET_CLEAR' });
 const passwordResetHashCreated = () => ({ type: 'AUTHENTICATION_PASSWORD_RESET_HASH_CREATED' });
 const passwordResetHashFailure = error => ({ type: 'AUTHENTICATION_PASSWORD_RESET_HASH_FAILURE', error });
+const passwordSaveClear = () => ({ type: 'AUTHENTICATION_PASSWORD_SAVE_CLEAR' });
 const passwordSaveFailure = error => ({ type: 'AUTHENTICATION_PASSWORD_SAVE_FAILURE', error });
 const passwordSaveSuccess = () => ({ type: 'AUTHENTICATION_PASSWORD_SAVE_SUCCESS' });
 const sessionCheckFailure = () => ({ type: 'AUTHENTICATION_SESSION_CHECK_FAILURE' });
@@ -259,6 +260,7 @@ export {
   passwordResetClear,
   passwordResetHashCreated,
   passwordResetHashFailure,
+  passwordSaveClear,
   passwordSaveFailure,
   passwordSaveSuccess,
   sessionCheckFailure,

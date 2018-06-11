@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { Button, Label } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 class ChangePasswordPage extends Component {
   constructor(props) {
@@ -32,12 +33,42 @@ class ChangePasswordPage extends Component {
 
   // Handle submission once all form data is valid
   handleValidSubmit() {
-    const formData = this.state;
-    const { savePasswordFunction } = this.props;
-    savePasswordFunction(formData);
+    const { password } = this.state;
+    const { sendPasswordFunction } = this.props;
+    sendPasswordFunction(password);
   }
 
   render() {
+    const { isPasswordChanged, isLoggedIn } = this.props.authentication;
+
+    //  If they just changed the password and aren't logged in
+    if (isPasswordChanged && !isLoggedIn) {
+      return (
+        <div className="row justify-content-center">
+          <div className="col-10 col-sm-7 col-md-5 col-lg-4">
+            <p>
+              Your changes have been saved, and you can
+              now <Link to="/account/login">log in</Link> with
+              the new password.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // If they just changed the password and are logged in
+    if (isPasswordChanged && isLoggedIn) {
+      return (
+        <div className="row justify-content-center">
+          <div className="col-10 col-sm-7 col-md-5 col-lg-4">
+            <p>
+              Your new password has been saved.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="row justify-content-center">
         <div className="col-10 col-sm-7 col-md-5 col-lg-4">
