@@ -11,8 +11,9 @@ const logoutSuccess = () => ({ type: 'AUTHENTICATION_LOGOUT_SUCCESS' });
 const registrationFailure = error => ({ type: 'AUTHENTICATION_REGISTRATION_FAILURE', error });
 const registrationSuccess = () => ({ type: 'AUTHENTICATION_REGISTRATION_SUCCESS' });
 const registrationSuccessViewed = () => ({ type: 'AUTHENTICATION_REGISTRATION_SUCCESS_VIEWED' });
+const passwordResetClear = () => ({ type: 'AUTHENTICATION_PASSWORD_RESET_CLEAR' });
 const passwordResetHashCreated = () => ({ type: 'AUTHENTICATION_PASSWORD_RESET_HASH_CREATED' });
-const passwordResetHashFailure = () => ({ type: 'AUTHENTICATION_PASSWORD_RESET_HASH_FAILURE' });
+const passwordResetHashFailure = error => ({ type: 'AUTHENTICATION_PASSWORD_RESET_HASH_FAILURE', error });
 const sessionCheckFailure = () => ({ type: 'AUTHENTICATION_SESSION_CHECK_FAILURE' });
 const sessionCheckSuccess = json => ({ type: 'AUTHENTICATION_SESSION_CHECK_SUCCESS', json });
 
@@ -45,6 +46,11 @@ const checkSession = () => {
 // Send email to API for hashing
 const createHash = (email) => {
   return async (dispatch) => {
+    // Clear the error box if it is displayed
+    dispatch(clearError());
+
+    // turn on spinner
+    dispatch(incrementProgress());
     // contact the API
     await fetch(
       // where to contact
@@ -64,11 +70,14 @@ const createHash = (email) => {
       }
       return null;
     }).then((json) => {
-      if (json.username) {
+      if (json.success) {
         return dispatch(passwordResetHashCreated(json));
       }
       return dispatch(passwordResetHashFailure(new Error('Something went wrong. Please try again.')));
     }).catch(err => dispatch(passwordResetHashFailure(err)));
+
+    // turn off spinner
+    return dispatch(decrementProgress());
   };
 };
 
@@ -203,6 +212,9 @@ export {
   registrationFailure,
   registrationSuccess,
   registrationSuccessViewed,
+  passwordResetClear,
+  passwordResetHashCreated,
+  passwordResetHashFailure,
   sessionCheckFailure,
   sessionCheckSuccess,
   // Others

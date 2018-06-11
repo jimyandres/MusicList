@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { Button, Label } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -73,6 +74,7 @@ class LoginPage extends Component {
                 value={this.state.password}
               />
               <AvFeedback>Password is required to log in.</AvFeedback>
+              <span><Link to="/account/reset-password">Forgot your password?</Link></span>
             </AvGroup>
             <Button color="primary">Log In</Button>
           </AvForm>
