@@ -1,0 +1,12 @@
+{
+  "crypto": {
+    "secret": "some-random-string"
+  },
+  "expressSession": {
+    "secret": "some-random-string"
+  },
+  "mailgun": {
+    "apiKey": "",
+    "domain": ""
+  }
+}
