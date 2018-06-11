@@ -14,6 +14,8 @@ const registrationSuccessViewed = () => ({ type: 'AUTHENTICATION_REGISTRATION_SU
 const passwordResetClear = () => ({ type: 'AUTHENTICATION_PASSWORD_RESET_CLEAR' });
 const passwordResetHashCreated = () => ({ type: 'AUTHENTICATION_PASSWORD_RESET_HASH_CREATED' });
 const passwordResetHashFailure = error => ({ type: 'AUTHENTICATION_PASSWORD_RESET_HASH_FAILURE', error });
+const passwordSaveFailure = error => ({ type: 'AUTHENTICATION_PASSWORD_SAVE_FAILURE', error });
+const passwordSaveSuccess = () => ({ type: 'AUTHENTICATION_PASSWORD_SAVE_SUCCESS' });
 const sessionCheckFailure = () => ({ type: 'AUTHENTICATION_SESSION_CHECK_FAILURE' });
 const sessionCheckSuccess = json => ({ type: 'AUTHENTICATION_SESSION_CHECK_SUCCESS', json });
 
@@ -202,6 +204,48 @@ const registerUser = (userData) => {
   };
 };
 
+// Save user's password
+const savePassword = (data) => {
+  return async (dispatch) => {
+    // Clear the error box if it is displayed
+    dispatch(clearError());
+
+    // turn on spinner
+    dispatch(incrementProgress());
+
+    // contact to the API
+    await fetch(
+      // where to contact
+      '/api/authentication/savepassword',
+      // what to send
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+      },
+    ).then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return null;
+    }).then(async (json) => {
+      if (json && json.success) {
+        dispatch(passwordSaveSuccess());
+      } else {
+        dispatch(passwordSaveFailure(new Error(json.error.message ? 'There was an error saving the password. Please try again.' : json.error)));
+      }
+    }).catch((err) => {
+      dispatch(passwordSaveFailure(new Error(err.message || 'There was an error saving the password. Please try again.')));
+    });
+
+    // turn off spinner
+    dispatch(decrementProgress());
+  };
+};
+
 export {
   // Action Creators
   loginAttempt,
@@ -215,6 +259,8 @@ export {
   passwordResetClear,
   passwordResetHashCreated,
   passwordResetHashFailure,
+  passwordSaveFailure,
+  passwordSaveSuccess,
   sessionCheckFailure,
   sessionCheckSuccess,
   // Others
@@ -223,4 +269,5 @@ export {
   logUserIn,
   logUserOut,
   registerUser,
+  savePassword,
 };
