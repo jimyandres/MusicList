@@ -27,3 +27,5 @@ router.post('/search', async (req, res) => {
     return res.json(data);
   });
 });
+
+module.exports = router;
