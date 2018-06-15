@@ -21,6 +21,7 @@
     "cookie-parser": "~1.4.3",
     "css-loader": "^0.28.11",
     "debug": "~2.6.9",
+    "disconnect": "^1.2.1",
     "ejs": "~2.5.7",
     "express": "~4.16.0",
     "express-session": "^1.10.1",
