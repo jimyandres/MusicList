@@ -9,7 +9,8 @@ const reducer = (state = initialState, action) => {
     case 'AUTHENTICATION_LOGOUT_FAILURE':
     case 'AUTHENTICATION_PASSWORD_RESET_HASH_FAILURE':
     case 'AUTHENTICATION_PASSWORD_SAVE_FAILURE':
-    case 'AUTHENTICATION_REGISTRATION_FAILURE': {
+    case 'AUTHENTICATION_REGISTRATION_FAILURE':
+    case 'MUSIC_ALBUM_SEARCH_FAILURE': {
       const newState = Object.assign({}, initialState);
       newState.isError = true;
       newState.error = action.error;
