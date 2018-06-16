@@ -1,30 +1,53 @@
 import React, { Component } from 'react';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import { Button, Label } from 'reactstrap';
+import { Button, Label, Table } from 'reactstrap';
 
 // helpers
-const listAlbums = albums => albums.map(album =>
-  (
-    <p key={album.id}>
-      <img src={album.thumb} alt="album thumbnail" />
-      <strong>Title: {album.title}</strong><br />
-    </p>
-  ),
-);
+const formatTitle = (discogsTitle, value) => discogsTitle.split(' - ')[value];
+const formatGenre = discogsGenre => discogsGenre.join(', ');
 
 class AlbumsPage extends Component {
   constructor(props) {
     super(props);
 
     // bound functions
+    this.addAlbum = this.addAlbum.bind(this);
+    this.createTable = this.createTable.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
+    this.listAlbums = this.listAlbums.bind(this);
 
     // component state
     this.state = {
       searchText: '',
     };
+  }
+
+  // Add an album to the user's list
+  addAlbum(e) {
+    const { addAlbumFunction } = this.props;
+    // get id from the button and send to the API
+    addAlbumFunction(e.target.id);
+  }
+
+  createTable(albums) {
+    return (
+      <Table striped responsive>
+        <thead>
+          <tr>
+            <th />
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Genre</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          { this.listAlbums(albums)}
+        </tbody>
+      </Table>
+    );
   }
 
   // update state as search value changes
@@ -44,6 +67,23 @@ class AlbumsPage extends Component {
     const { searchAlbumsFunction } = this.props;
     const formData = this.state;
     searchAlbumsFunction(formData.searchText);
+  }
+
+  listAlbums(albums) {
+    return albums.map(album =>
+      (
+        <tr kye={album.id}>
+          <td><img src={album.thumb} alt="album thumbnail" width="80" height="80" /></td>
+          <td>{formatTitle(album.title, 1)}</td>
+          <td>{formatTitle(album.title, 0)}</td>
+          <td>{formatGenre(album.genre)}</td>
+          <td>
+            <Button color="primary" outline id={album.id} onClick={this.addAlbum}>
+              Add To My List
+            </Button>
+          </td>
+        </tr>
+      ));
   }
 
   render() {
@@ -77,8 +117,12 @@ class AlbumsPage extends Component {
         </div>
         <div className="row">
           <div className="col-12 col-sm-12">
-            { albums && albums.length > 0 ? <div><hr /><h2>Albums</h2></div> : null }
-            { albums && albums.length > 0 ? listAlbums(albums) : null }
+            { albums && albums.length > 0 ? <h2>Albums</h2> : null }
+            <div className="row">
+              <div className="col-12 col-sm-12">
+                { albums && albums.length > 0 ? this.createTable(albums) : null }
+              </div>
+            </div>
           </div>
         </div>
       </div>
