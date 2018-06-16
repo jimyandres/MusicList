@@ -12,13 +12,14 @@ class AlbumsPageContainer extends Component {
   }
 
   render() {
-    const { addAlbumFunction, albums, searchAlbumsFunction } = this.props;
+    const { addAlbumFunction, albums, searchAlbumsFunction, user } = this.props;
     return (
       <div>
         <AlbumsPage
           addAlbumFunction={addAlbumFunction}
           albums={albums}
           searchAlbumsFunction={searchAlbumsFunction}
+          user={user}
         />
       </div>
     );
@@ -28,6 +29,7 @@ class AlbumsPageContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     albums: state.albums,
+    user: state.user,
   };
 };
 
