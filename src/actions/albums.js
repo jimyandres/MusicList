@@ -25,7 +25,7 @@ const addAlbum = (id) => {
       // what to send
       {
         method: 'POST',
-        body: JSON.stringify(id),
+        body: JSON.stringify({ id }),
         headers: {
           'Content-Type': 'application/json',
         },
