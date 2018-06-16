@@ -50,7 +50,7 @@ router.post('/add', async (req, res) => {
 
     // Sanity check 2! Is the artist already added?
     for (let i = 0; i < albumInfo.artists.length; i += 1) {
-      const artistIndex = foundUser.artist.indexOf(albumInfo.artists[i].id);
+      const artistIndex = foundUser.artists.indexOf(albumInfo.artists[i].id);
       if (artistIndex < 0) {
         foundUser.artists.push(...albumInfo.artists.map(artist => artist.id));
       }
