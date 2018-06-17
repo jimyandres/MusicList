@@ -37,7 +37,7 @@ const addAlbum = (id) => {
       }
       return null;
     }).then((json) => {
-      if (json.results) {
+      if (json.email) {
         return dispatch(albumAddSuccess(json));
       }
       return dispatch(albumAddFailure(new Error(json.error)));
