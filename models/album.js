@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const Album = new Schema({
   title: String,
   discogsId: { type: Number, unique: true },
-  artist: [Schema.Types.Mixed],
+  artists: [Schema.Types.Mixed],
   thumb: String,
   country: String,
   formats: [Schema.Types.Mixed],
