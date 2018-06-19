@@ -8,6 +8,8 @@ const albumAddSuccess = json => ({ type: 'MUSIC_ALBUM_ADD_SUCCESS', json });
 const albumSearchClear = () => ({ type: 'MUSIC_ALBUM_SEARCH_CLEAR' });
 const albumSearchFailure = error => ({ type: 'MUSIC_ALBUM_SEARCH_FAILURE', error });
 const albumSearchSuccess = json => ({ type: 'MUSIC_ALBUM_SEARCH_SUCCESS', json });
+const albumsPopulateFailure = error => ({ type: 'MUSIC_ALBUMS_POPULATE_FAILURE', error });
+const albumsPopulateSuccess = json => ({ type: 'MUSIC_ALBUMS_POPULATE_SUCCESS', json });
 
 // Add an album
 const addAlbum = (id) => {
@@ -44,6 +46,43 @@ const addAlbum = (id) => {
     }).catch((err) => {
       dispatch(albumAddFailure(new Error(err)));
     });
+
+    // turn off spinner
+    return dispatch(decrementProgress());
+  };
+};
+
+// Populate Album data
+const populateAlbums = (albums) => {
+  return async (dispatch) => {
+    // clear the error box if it's displayed
+    dispatch(clearError());
+
+    // turn on spinner
+    dispatch(incrementProgress());
+
+    // Hit the API
+    await fetch(
+      '/api/albums/populate',
+      {
+        method: 'POST',
+        body: JSON.stringify(albums),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+      },
+    ).then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return null;
+    }).then((json) => {
+      if (!json.error) {
+        return dispatch(albumsPopulateSuccess(json));
+      }
+      return dispatch(albumsPopulateFailure(new Error(json.error)));
+    }).catch(error => dispatch(albumsPopulateFailure(new Error(error))));
 
     // turn off spinner
     return dispatch(decrementProgress());
@@ -105,7 +144,10 @@ export {
   albumSearchClear,
   albumSearchFailure,
   albumSearchSuccess,
+  albumsPopulateFailure,
+  albumsPopulateSuccess,
   // Others
   addAlbum,
+  populateAlbums,
   searchAlbum,
 };
