@@ -12,12 +12,13 @@ class AlbumsPageContainer extends Component {
   }
 
   render() {
-    const { addAlbumFunction, albums, searchAlbumsFunction, user } = this.props;
+    const { addAlbumFunction, albums, authentication, searchAlbumsFunction, user } = this.props;
     return (
       <div>
         <AlbumsPage
           addAlbumFunction={addAlbumFunction}
           albums={albums}
+          authentication={authentication}
           searchAlbumsFunction={searchAlbumsFunction}
           user={user}
         />
@@ -26,12 +27,11 @@ class AlbumsPageContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    albums: state.albums,
-    user: state.user,
-  };
-};
+const mapStateToProps = state => ({
+  albums: state.albums,
+  authentication: state.authentication,
+  user: state.user,
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   addAlbumFunction: addAlbum,
