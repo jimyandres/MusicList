@@ -13,7 +13,8 @@ const formatArtists = artists => artists.map(artist => <p key={artist.discogsId}
 class ListPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+
+    this.deleteItem = this.deleteItem.bind(this);
   }
 
   createTable(items) {
@@ -36,7 +37,13 @@ class ListPage extends Component {
   }
 
   deleteItem(id, type) {
-    console.log(id, type);
+    const { deleteAlbumFunction, deleteArtistFunction } = this.props;
+    if (type === 'album') {
+      deleteAlbumFunction(id);
+    }
+    if (type === 'artist') {
+      deleteArtistFunction(id);
+    }
   }
 
   listItems(items) {
