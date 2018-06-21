@@ -5,6 +5,8 @@ import { clearError } from './error';
 // Action Creators
 const albumAddFailure = error => ({ type: 'MUSIC_ALBUM_ADD_FAILURE', error });
 const albumAddSuccess = json => ({ type: 'MUSIC_ALBUM_ADD_SUCCESS', json });
+const albumDeleteFailure = error => ({ type: 'MUSIC_ALBUM_DELETE_FAILURE', error });
+const albumDeleteSuccess = json => ({ type: 'MUSIC_ALBUM_DELETE_SUCCESS', json });
 const albumSearchClear = () => ({ type: 'MUSIC_ALBUM_SEARCH_CLEAR' });
 const albumSearchFailure = error => ({ type: 'MUSIC_ALBUM_SEARCH_FAILURE', error });
 const albumSearchSuccess = json => ({ type: 'MUSIC_ALBUM_SEARCH_SUCCESS', json });
@@ -51,6 +53,48 @@ const addAlbum = (id) => {
     return dispatch(decrementProgress());
   };
 };
+
+// Delete an album from user's list
+const deleteAlbum = (albumId) => {
+  return async (dispatch) => {
+    // clear the error box if it's displayed
+    dispatch(clearError());
+
+    // turn on spinner
+    dispatch(incrementProgress());
+
+    // Hit the API
+    await fetch(
+      '/api/albums/delete',
+      {
+        method: 'POST',
+        body: JSON.stringify({ albumId }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+      },
+    ).then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return null;
+    }).then((json) => {
+      if (!json.error) {
+        dispatch(populateAlbums(json.albums)); // eslint-disable-line
+      }
+      return json;
+    }).then((json) => {
+      if (!json.error) {
+        return dispatch(albumDeleteSuccess(json));
+      }
+      return dispatch(albumDeleteFailure(new Error(json.error)));
+    }).catch(error => dispatch(albumDeleteFailure(new Error(error))));
+
+    // turn off spinner
+    return dispatch(decrementProgress());
+  };
+}
 
 // Populate Album data
 const populateAlbums = (albums) => {
@@ -141,6 +185,8 @@ export {
   // Action Creators
   albumAddFailure,
   albumAddSuccess,
+  albumDeleteFailure,
+  albumDeleteSuccess,
   albumSearchClear,
   albumSearchFailure,
   albumSearchSuccess,
@@ -148,6 +194,7 @@ export {
   albumsPopulateSuccess,
   // Others
   addAlbum,
+  deleteAlbum,
   populateAlbums,
   searchAlbum,
 };
