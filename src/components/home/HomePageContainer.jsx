@@ -1,25 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { incrementProgress, decrementProgress } from '../../actions/progress';
+import { getLatestAlbum } from '../../actions/albums';
 
 import HomePage from './HomePage';
 
-const HomePageContainer = (props) => {
-  const { incrementProgressAction, decrementProgressAction } = props;
-  return (
-    <HomePage
-      incrementFunction={incrementProgressAction}
-      decrementFunction={decrementProgressAction}
-    />
-  );
-};
+class HomePageContainer extends Component {
+  componentWillMount() {
+    const { getLatestAlbumFunction } = this.props;
+    getLatestAlbumFunction();
+  }
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    incrementProgressAction: incrementProgress,
-    decrementProgressAction: decrementProgress,
-  }, dispatch);
-};
+  render() {
+    const { latestAlbum } = this.props;
+    return (
+      <HomePage
+        latestAlbum={latestAlbum}
+      />
+    );
+  }
+}
 
-export default connect(null, mapDispatchToProps)(HomePageContainer);
+const mapDispatchToProps = dispatch => bindActionCreators({
+  getLatestAlbumFunction: getLatestAlbum,
+  dispatch,
+}, dispatch);
+
+const mapStateToProps = state => ({ latestAlbum: state.latest });
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePageContainer);
