@@ -14,7 +14,6 @@ class ResetPasswordPage extends Component {
     // bound functions
     this.clearPasswordReset = this.clearPasswordReset.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
   }
 
@@ -36,13 +35,6 @@ class ResetPasswordPage extends Component {
   // update state as email value changes
   handleEmailChange(e) {
     this.setState({ email: e.target.value });
-  }
-
-  // catch enter key
-  handleKeyPress(target) {
-    if (target.charCode === 13) {
-      this.handleValidSubmit();
-    }
   }
 
   // Handle submission once all form data is valid

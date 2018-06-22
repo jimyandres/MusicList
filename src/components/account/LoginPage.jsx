@@ -13,7 +13,6 @@ class LoginPage extends Component {
     };
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
   }
@@ -21,13 +20,6 @@ class LoginPage extends Component {
   // update state as email value changes
   handleEmailChange(e) {
     this.setState({ email: e.target.value });
-  }
-
-  // catch enter key
-  handleKeyPress(target) {
-    if (target.charCode === 13) {
-      this.handleValidSubmit();
-    }
   }
 
   // update states as password value changes

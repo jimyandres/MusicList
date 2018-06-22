@@ -15,21 +15,12 @@ class RegisterPage extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
   }
 
   // Handle input changes
   handleInputChange(e) {
     this.setState({ [e.currentTarget.id]: e.target.value });
-  }
-
-  // Catch enter clicks
-  handleKeyPress(target) {
-    if (target.charCode === 13) {
-      target.preventDefault();
-      this.handleValidSubmit();
-    }
   }
 
   // Handle submission once all form data is valid
