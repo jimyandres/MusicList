@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardBlock, CardText, CardTitle } from 'reactstrap';
+import { Card, CardBody, CardText, CardTitle } from 'reactstrap';
 
 const formatAlbum = (album) => {
   if (!album) {
@@ -19,12 +19,12 @@ const Sidebar = (props) => {
   return (
     <aside className="col-sm-12 col-md-4">
       <Card>
-        <CardBlock>
+        <CardBody>
           <CardTitle className="text-center">Latest Album</CardTitle>
           <CardText className="text-center">
             { latestAlbum && latestAlbum.title ? formatAlbum(latestAlbum) : null }
           </CardText>
-        </CardBlock>
+        </CardBody>
       </Card>
     </aside>
   );
