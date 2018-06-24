@@ -1,0 +1,16 @@
+{
+  "crypto": {
+    "secret": "some-random-string"
+  },
+  "discogs": {
+    "key": "",
+    "secret": ""
+  },
+  "expressSession": {
+    "secret": "some-random-string"
+  },
+  "mailgun": {
+    "apiKey": "",
+    "domain": ""
+  }
+}
