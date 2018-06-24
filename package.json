@@ -18,6 +18,8 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "bootstrap": "^4.1.1",
+    "compression": "^1.7.1",
+    "compression-webpack-plugin": "^1.0.1",
     "cookie-parser": "~1.4.3",
     "css-loader": "^0.28.11",
     "debug": "~2.6.9",
