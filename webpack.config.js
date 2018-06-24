@@ -1,7 +1,7 @@
 const { resolve } = require('path');
-const webpack = require('webpack');
+const CompressionPlugin = require('compression-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
 
 const cssOutputLocation = process.env.NODE_ENV === 'production' ?
   'public/stylesheets/style-prod.css' :
@@ -69,7 +69,35 @@ module.exports = {
 };
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.plugins.push(new UglifyJsPlugin());
+  module.exports.plugins.unshift(new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false,
+      screw_ie8: true,
+      conditionals: true,
+      unused: true,
+      comparisons: true,
+      sequences: true,
+      dead_code: true,
+      evaluate: true,
+      if_return: true,
+      join_vars: true,
+    },
+    output: {
+      comments: false,
+    },
+  }));
+  module.exports.plugins.push(new webpack.HashedModuleIdsPlugin());
+  module.exports.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+  module.exports.plugins.push(new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production'),
+  }));
+  module.exports.plugins.push(new CompressionPlugin({
+    asset: '[path].gz[query]',
+    algorithm: 'gzip',
+    test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+    threshold: 10240,
+    minRatio: 0.8,
+  }));
 }
 
 if (process.env.NODE_ENV !== 'production') {

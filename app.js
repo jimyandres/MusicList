@@ -1,5 +1,6 @@
 require('babel-register');
 const appConfig = require('./config.js');
+const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
 const express = require('express');
@@ -43,6 +44,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(expressSession);
 app.use(passport.initialize());
+app.use(compression());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
