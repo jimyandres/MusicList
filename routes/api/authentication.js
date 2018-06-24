@@ -1,6 +1,8 @@
 const appConfig = require('../../config.js');
+const createDOMPurify = require('dompurify');
 const crypto = require('crypto');
 const express = require('express');
+const { JSDOM } = require('jsdom');
 const mailgun = require('mailgun-js')({
   apiKey: appConfig.mailgun.apiKey,
   domain: appConfig.mailgun.domain,
@@ -59,14 +61,25 @@ router.post('/register', async (req, res) => {
     return res.send(JSON.stringify({ error: 'Email or username already exists.' }));
   }
   if (!foundUser) {
+    // sanitize data
+    const { window } = (new JSDOM(''));
+    const DOMPurify = createDOMPurify(window);
+    const sanitizedBody = {
+      username: DOMPurify.sanitize(req.body.username),
+      email: DOMPurify.sanitize(req.body.email),
+      firstName: DOMPurify.sanitize(req.body.firstName),
+      lastName: DOMPurify.sanitize(req.body.lastName),
+      password: req.body.password,
+    };
+
     // Create a user object to save, using values from incoming JSON
-    const newUser = new User(req.body);
+    const newUser = new User(sanitizedBody);
 
     // Save, via Passport's "register" method, the user
     return User.register(newUser, req.body.password, (err) => {
       // If there's a problem, send back a JSON object with the error
       if (err) {
-        return res.send(JSON.stringify({ error: err }));
+        return res.send(JSON.stringify({ error: err.message }));
       }
       // Otherwise log them in
       return passport.authenticate('local')(req, res, () => {
